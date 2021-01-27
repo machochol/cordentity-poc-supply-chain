@@ -63,7 +63,7 @@ class PackageWithdrawal {
         private fun verifyReceipt() {
             val serialProofRequest = proofRequest("proof_req", "1.0") {
                 reveal("serial") {
-                    "serial" shouldBe serial
+                    FilterProperty.Value shouldBe serial
                     FilterProperty.IssuerDid shouldBe indyUser().walletUser.getIdentityDetails().did
                 }
                 proveNonRevocation(Interval.allTime())

@@ -117,12 +117,12 @@ class ManufactureClient {
             val provedAuthorities = authorities.mapValues { (_, authority) ->
                 val proofRequest = proofRequest("package_history_req", "1.0") {
                     reveal("status") {
-                        "serial" shouldBe serial
+                        FilterProperty.Value shouldBe serial
                         FilterProperty.IssuerDid shouldBe authority.did
                         FilterProperty.SchemaId shouldBe authority.schemaId
                     }
                     reveal("time") {
-                        "serial" shouldBe serial
+                        FilterProperty.Value shouldBe serial
                         FilterProperty.IssuerDid shouldBe authority.did
                         FilterProperty.SchemaId shouldBe authority.schemaId
                     }

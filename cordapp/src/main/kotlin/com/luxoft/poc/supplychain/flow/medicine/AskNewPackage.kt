@@ -20,6 +20,7 @@ import co.paralleluniverse.fibers.Suspendable
 import com.luxoft.blockchainlab.corda.hyperledger.indy.flow.b2c.IssueCredentialFlowB2C
 import com.luxoft.blockchainlab.corda.hyperledger.indy.flow.b2c.VerifyCredentialFlowB2C
 import com.luxoft.blockchainlab.hyperledger.indy.models.CredentialValue
+import com.luxoft.blockchainlab.hyperledger.indy.models.PredicateTypes
 import com.luxoft.blockchainlab.hyperledger.indy.utils.*
 import com.luxoft.poc.supplychain.data.PackageInfo
 import com.luxoft.poc.supplychain.data.PackageState
@@ -73,7 +74,7 @@ class AskNewPackage {
                     //                    FilterProperty.Value shouldBe "Healthy"
                     FilterProperty.IssuerDid shouldBe trustedCredentialsIssuerDID
                 }
-                proveGreaterThan("age", 18)
+                provePredicateThan("age", PredicateTypes.GE, 18)
             }
             //In case of ignoring verification
 //            connectionService().sendProofRequest(proofRequest, clientDid)

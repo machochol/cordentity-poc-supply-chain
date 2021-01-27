@@ -135,7 +135,7 @@ class TreatmentCenterClient {
 
             val serialProofRequest = com.luxoft.blockchainlab.hyperledger.indy.utils.proofRequest("proof_req", "1.0") {
                 reveal("serial") {
-                    "serial" shouldBe credential.credential.values["serial"]!!.raw
+                    FilterProperty.Value shouldBe credential.credential.values["serial"]!!.raw
                     FilterProperty.IssuerDid shouldBe credential.credential.getCredentialDefinitionIdObject().did
                 }
                 proveNonRevocation(Interval.allTime())

@@ -22,6 +22,7 @@ import com.luxoft.blockchainlab.corda.hyperledger.indy.flow.indyUser
 import com.luxoft.blockchainlab.corda.hyperledger.indy.service.awaitFiber
 import com.luxoft.blockchainlab.corda.hyperledger.indy.service.connectionService
 import com.luxoft.blockchainlab.hyperledger.indy.models.Interval
+import com.luxoft.blockchainlab.hyperledger.indy.utils.FilterProperty
 import com.luxoft.blockchainlab.hyperledger.indy.utils.proofRequest
 import com.luxoft.blockchainlab.hyperledger.indy.utils.proveNonRevocation
 import com.luxoft.blockchainlab.hyperledger.indy.utils.reveal
@@ -77,7 +78,7 @@ class GetPackageHistory {
         @Suspendable
         private fun checkPermissions(serial: String, partyDid: String) {
             val proofRequest = proofRequest("user_proof_req", "1.0") {
-                reveal("serial") { "serial" shouldBe serial }
+                reveal("serial") { FilterProperty.Value shouldBe serial }
                 proveNonRevocation(Interval.allTime())
             }
             if (!subFlow(VerifyCredentialFlowB2C.Verifier(partyDid, partyDid, proofRequest)))
