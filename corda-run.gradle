@@ -88,28 +88,33 @@ configurations {
 
 task deployCordappToNodes(group: RUN_CORDA_GROUP) {
     doLast {
+        println("deployCordappToNodes started")
         for(nodeDir in cordaNodesDirs) {
             copy {
                 from('devops/Dockerfile-corda')
                 into(nodeDir)
             }
         }
+        println("deployCordappToNodes finished")
     }
 }
 
 task deployGenesisToNodes(group: RUN_CORDA_GROUP) {
     doLast {
+        println("deployGenesisToNodes started")
         for (nodeDir in cordaNodesDirs) {
             copy {
                 from ('cordapp/src/main/resources/genesis')
                 into("$nodeDir/genesis")
             }
         }
+        println("deployGenesisToNodes finished")
     }
 }
 
 task deployConfigsToNodes(group: RUN_CORDA_GROUP) {
     doLast {
+        println("deployConfigsToNodes started")
         indyConfigMapping.each { nodeName, configName ->
             def nodeDir = cordaNodesDirs.find { it.contains(nodeName) }
 
@@ -120,6 +125,7 @@ task deployConfigsToNodes(group: RUN_CORDA_GROUP) {
                 rename("${configName}.properties", 'indy.properties')
             }
         }
+        println("deployConfigsToNodes finished")
     }
 }
 
@@ -128,14 +134,18 @@ task killCordaProcesses(type: Exec, group: RUN_CORDA_GROUP) {
 }
 
 task deployIndyStuff(group: RUN_CORDA_GROUP) {
+    println("deployIndyStuff started")
     dependsOn deployCordappToNodes
     dependsOn deployConfigsToNodes
     dependsOn deployGenesisToNodes
+    println("deployIndyStuff finished")
 }
 
 task runNodes(type: Exec, group: RUN_CORDA_GROUP) {
     dependsOn deployIndyStuff
 
+    println("runNodes step 1")
     workingDir "$rootDir/build/nodes"
     executable "./runnodes"
+    println("runNodes step 1 done")
 }
