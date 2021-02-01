@@ -70,7 +70,7 @@ class AskNewPackage {
                 reveal("name")
                 reveal("gender")
                 reveal("medicalid")
-                provePredicateThan("age", PredicateTypes.GE, 18)
+//                provePredicateThan("age", PredicateTypes.GE, 18)
             }
             //In case of ignoring verification
 //            connectionService().sendProofRequest(proofRequest, clientDid)
