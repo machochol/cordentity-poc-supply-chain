@@ -67,16 +67,9 @@ class AskNewPackage {
         @Suspendable
         private fun checkPermissions() {
             val proofRequest = proofRequest("user_proof_req", "1.0") {
-                reveal("socialid")
                 reveal("name")
-                reveal("birthday")
                 reveal("gender")
-                reveal("picture")
-                reveal("medicalid") { FilterProperty.IssuerDid shouldBe trustedCredentialsIssuerDID }
-                reveal("insurer") { FilterProperty.IssuerDid shouldBe trustedCredentialsIssuerDID }
-                reveal("limit") { FilterProperty.IssuerDid shouldBe trustedCredentialsIssuerDID }
-                reveal("diagnosis")
-                reveal("prescription")
+                reveal("medicalid")
                 provePredicateThan("age", PredicateTypes.GE, 18)
             }
             //In case of ignoring verification
