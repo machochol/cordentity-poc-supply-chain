@@ -56,8 +56,8 @@ val myModule: Module = module {
     single { connectedAgentConnection() }
 }
 
-val webServerEndpoint = "http://3.17.65.252:8082"
-val indyAgentWSEndpoint = "ws://3.17.65.252:8094/ws"
+val webServerEndpoint = "http://18.216.172.155:8082"
+val indyAgentWSEndpoint = "ws://18.216.172.155:8094/ws"
 val tailsPath = "/sdcard/tails"
 
 //Async agent initialization for smooth UX
@@ -75,8 +75,8 @@ lateinit var wallet: Wallet
 
 val indyInit = Single.create<Unit> { observer ->
     try {
-        pool = PoolHelper.openOrCreate(File(GENESIS_PATH), "pool")
-        wallet = WalletHelper.openOrCreate("medical-supplychain", "password")
+        pool = PoolHelper.openOrCreate(File(GENESIS_PATH))
+        wallet = WalletHelper.openOrCreate("ownerWallet", "password")
         observer.onSuccess(Unit)
     } catch (e: Exception) {
         observer.onError(RuntimeException("Error initializing indy", e))

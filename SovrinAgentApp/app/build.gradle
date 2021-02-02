@@ -46,6 +46,9 @@ android {
 }
 
 dependencies {
+    def cordentity_provider = 'machochol'
+    def cordentity_version = 'develop-SNAPSHOT'
+
     implementation("com.github.${cordentity_provider}.cordentity:cordentity-indy-utils:${cordentity_version}")
     implementation("com.github.${cordentity_provider}.cordentity:cordentity-agent-connection:${cordentity_version}")
 
