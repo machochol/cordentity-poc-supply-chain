@@ -25,12 +25,12 @@ import android.util.Log
 import android.widget.Button
 import com.luxoft.blockchainlab.corda.hyperledger.indy.AgentConnection
 import com.luxoft.blockchainlab.hyperledger.indy.IndyUser
+import com.luxoft.blockchainlab.hyperledger.indy.helpers.TailsHelper
 import com.luxoft.blockchainlab.hyperledger.indy.models.ProofRequest
 import com.luxoft.blockchainlab.hyperledger.indy.utils.SerializationUtils
 import com.luxoft.supplychain.sovrinagentapp.R
 import com.luxoft.supplychain.sovrinagentapp.communcations.SovrinAgentService
 import com.luxoft.supplychain.sovrinagentapp.data.ClaimAttribute
-import com.luxoft.supplychain.sovrinagentapp.di.tailsPath
 import com.luxoft.supplychain.sovrinagentapp.ui.MainActivity.Companion.showAlertDialog
 import com.luxoft.supplychain.sovrinagentapp.ui.model.ClaimsAdapter
 import io.realm.Realm
@@ -38,8 +38,6 @@ import org.koin.android.ext.android.inject
 import rx.Completable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import java.io.File
-
 
 class AskClaimsActivity : AppCompatActivity() {
 
@@ -91,23 +89,17 @@ class AskClaimsActivity : AppCompatActivity() {
                 val credential = connection.receiveCredential().toBlocking().value()
                 indyUser.checkLedgerAndReceiveCredential(credential, credentialRequest, credentialOffer)
 
-                api.getTails()
-                        .subscribeOn(Schedulers.io())
+                val revocationRegistryInfo = indyUser.getRevocationRegistryDefinition(
+                        credential.credential.getCredentialDefinitionIdObject()
+                )
+                val tailsHash = revocationRegistryInfo!!.value["tailsHash"].toString()
+                connection.requestTails(tailsHash).subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                { tails ->
-                                    val dir = File(tailsPath)
-                                    if (!dir.exists())
-                                        dir.mkdirs()
+                                { tailsResponse ->
 
-                                    tails.forEach { name, content ->
-                                        val file = File("$tailsPath/$name")
-                                        if (file.exists())
-                                            file.delete()
-                                        file.createNewFile()
-                                        file.writeText(content)
-                                    }
-                                    println("TAILS WRITTEN")
+                                    TailsHelper.DefaultWriter(indyUser.walletUser.getTailsPath()).write(tailsResponse)
+                                    println("Tails written")
                                     finish()
                                 },
                                 { er ->
