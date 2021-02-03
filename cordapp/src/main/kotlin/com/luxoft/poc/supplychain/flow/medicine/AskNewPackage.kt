@@ -69,7 +69,7 @@ class AskNewPackage {
             val proofRequest = proofRequest("user_proof_req", "1.0") {
                 reveal("name")
                 reveal("gender")
-                reveal("medicalid") { FilterProperty.IssuerDid shouldBe trustedCredentialsIssuerDID }
+                reveal("medicalid") // skip for now { FilterProperty.IssuerDid shouldBe trustedCredentialsIssuerDID }
             }
             //In case of ignoring verification
 //            connectionService().sendProofRequest(proofRequest, clientDid)
